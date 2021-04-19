@@ -125,7 +125,7 @@ async function doPredictions(){
 
         // get winner
         var result = getWinner(predictedClassID, computersMove);
-        document.getElementById("winner").innerText = result;
+        document.getElementById("winner").innerText = "WINNER " + result;
 
         // score
         if(result.localeCompare("PLAYER")) computerScore++;
@@ -169,19 +169,24 @@ function stopPredicting(){
 	predicts(false);
 }
 
+function resetScore(){
+    computerScore=0;
+    playerScore=0;
+    document.getElementById("prediction").innerText = "";
+    document.getElementById("score").innerText = "";
+    document.getElementById("winner").innerText = "";
+    setComputersMove("");
+}
+
 function resetAll(){
-    stopPredicting(false);
+    predicts(false);
     rockSamples=0;
     paperSamples=0;
     scissorsSamples=0;
     document.getElementById("rocksamples").innerText = "Rock samples:" + rockSamples;
     document.getElementById("papersamples").innerText = "Paper samples:" + paperSamples;
     document.getElementById("scissorssamples").innerText = "Scissors samples:" + scissorsSamples;
-    document.getElementById("prediction").innerText = "";
-    document.getElementById("score").innerText = "";
-    document.getElementById("winner").innerText = "";
-    setComputersMove("");
-
+    resetScore();
     init();
 }
 
