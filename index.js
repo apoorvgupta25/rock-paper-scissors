@@ -100,22 +100,28 @@ async function doPredictions(){
     var text = "";
     switch (predictedClassID) {
         case 0:
-            text = "Rock";
+            text = "PL Rock";
             break;
         case 1:
-            text = "Paper";
+            text = "PL Paper";
             break;
         case 2:
-            text = "Scissors";
+            text = "PL Scissors";
             break;
     }
 
+    // change only when user changes move
     if (predictedClassID != previousClass){
         document.getElementById("prediction").innerText = text;
 
         // computers Move
+        var computerText = "";
         var computersMove = Math.floor((Math.random() * 3));
-        setRandom(computersMove);
+        if (computersMove == 0) computerText = "CP Rock";
+        if (computersMove == 1) computerText = "CP Paper";
+        if (computersMove == 2) computerText = "CP Scissors";
+
+        setComputersMove(computerText);
 
         // get winner
         var result = getWinner(predictedClassID, computersMove);
@@ -124,7 +130,7 @@ async function doPredictions(){
         // score
         if(result.localeCompare("PLAYER")) computerScore++;
         if(result.localeCompare("COMPUTER")) playerScore++;
-        document.getElementById("score").innerText = "computerScore " + computerScore + " / " + "playerScore " + playerScore ;
+        document.getElementById("score").innerText = "Computer's Score " + computerScore + " / " + "Player's Score " + playerScore ;
 
     }
     previousClass = predictedClassID;
@@ -174,13 +180,13 @@ function resetAll(){
     document.getElementById("prediction").innerText = "";
     document.getElementById("score").innerText = "";
     document.getElementById("winner").innerText = "";
-    setRandom("");
+    setComputersMove("");
 
     init();
 }
 
-function setRandom(msg){
-    document.getElementById("random").innerText = msg;
+function setComputersMove(msg){
+    document.getElementById("computer").innerText = msg;
 }
 
 init();
