@@ -162,11 +162,15 @@ function doTraining(){
 }
 
 function startPredicting(){
-	predicts(true);
+    if (rockSamples > 0 | paperSamples > 0 | scissorsSamples > 0){
+        predicts(true);
+    } else alert('Add Training Dataset');
 }
 
 function stopPredicting(){
-	predicts(false);
+    if (rockSamples > 0 | paperSamples > 0 | scissorsSamples > 0){
+        predicts(false);
+    } else alert('Add Training Dataset');
 }
 
 function resetScore(){
