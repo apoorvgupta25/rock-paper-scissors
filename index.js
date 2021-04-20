@@ -170,6 +170,7 @@ function stopPredicting(){
 }
 
 function resetScore(){
+    predicts(false);
     computerScore=0;
     playerScore=0;
     document.getElementById("prediction").innerText = "";
@@ -179,7 +180,6 @@ function resetScore(){
 }
 
 function resetAll(){
-    predicts(false);
     rockSamples=0;
     paperSamples=0;
     scissorsSamples=0;
