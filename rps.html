@@ -26,6 +26,7 @@
                     <br/><br/><br/>
                         <p >Give samples of Rock, Paper, Scissors each and Train the model</p>
                         <video autoplay playsinline muted id="wc" width="440" height="440"></video>
+                        <div class="mt-1" id="prediction"></div>
                     <!-- </div> -->
 
                 </div>
@@ -44,11 +45,12 @@
                     <button type="button" class="btn btn-danger mt-2" id="stopPredicting" onclick="stopPredicting()" >Stop Playing</button>
                     <button type="button" class="btn btn-warning mt-2" id="reset" onclick="resetAll()"> Reset Model</button>
                     <button type="button" class="btn btn-secondary mt-2" id="reset" onclick="resetScore()"> Reset Score</button>
-                    <div class="mt-1" id="computer"></div>
-                    <div class="mt-1" id="prediction"></div>
-                    <div class="mt-1" id="winner"></div>
-                    <div class="mt-1" id="score"></div>
+
+                    <span id="computer"></span>
                 </div>
+
+                <h3 class="mt-1" id="winner"></h3>
+                <h3 class="mt-1" id="score"></h3>
             </div>
         </div>
     </body>

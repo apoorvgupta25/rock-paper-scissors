@@ -14,6 +14,12 @@ var time = 1000;
 var computerScore=0, playerScore=0;
 var requiredSamples = 5;
 var classes = ['0', '1', '2'];
+var images1 = [];
+// index1 = 0;
+images1[0] = "<div><img src='images/2.png' ></div>";
+images1[1] = "<div><img src='images/paper.png' ></div>";
+images1[2] = "<div><img src='images/3.png'  ></div>";
+
 
 async function init(){
     await webcam.setup();
@@ -92,7 +98,7 @@ function takeSample(element, id, name, samples) {
             if(element.id == 1) paperSamples = samples;
             if(element.id == 2) scissorsSamples = samples;
         }
-    }, 750);
+    }, 100);
 }
 
 function addSampleToDataset(element){
@@ -148,7 +154,8 @@ async function doPredictions(){
         if (computersMove == 1) computerText = "CP Paper";
         if (computersMove == 2) computerText = "CP Scissors";
 
-        setComputersMove(computerText);
+        document.getElementById("computer").innerHTML=images1[computersMove];
+
 
         // get winner
         var result = getWinner(predictedClassID, computersMove);
@@ -183,7 +190,7 @@ function getWinner(playersMove, computersMove){
 function doTraining(){
     if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         train();
-        setTimeout(function() { alert('Training Completed'); }, 3000);
+        setTimeout(function() { alert('Training Completed'); }, 300);
 
 
     } else alert('Add Training Dataset');
@@ -208,7 +215,7 @@ function resetScore(){
     document.getElementById("prediction").innerText = "";
     document.getElementById("score").innerText = "";
     document.getElementById("winner").innerText = "";
-    setComputersMove("");
+    document.getElementById("computer").style.display='none';
 }
 
 function resetAll(){
@@ -220,10 +227,6 @@ function resetAll(){
     document.getElementById("scissorssamples").innerText = "Scissors samples:" + scissorsSamples;
     resetScore();
     init();
-}
-
-function setComputersMove(msg){
-    document.getElementById("computer").innerText = msg;
 }
 
 init();
