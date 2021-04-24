@@ -16,9 +16,9 @@ var requiredSamples = 5;
 var classes = ['0', '1', '2'];
 var images1 = [];
 // index1 = 0;
-images1[0] = "<div><img src='images/2.png' ></div>";
+images1[0] = "<div><img src='images/rock.png' ></div>";
 images1[1] = "<div><img src='images/paper.png' ></div>";
-images1[2] = "<div><img src='images/3.png'  ></div>";
+images1[2] = "<div><img src='images/scissors.png'  ></div>";
 
 
 async function init(){
@@ -98,7 +98,7 @@ function takeSample(element, id, name, samples) {
             if(element.id == 1) paperSamples = samples;
             if(element.id == 2) scissorsSamples = samples;
         }
-    }, 100);
+    }, 750);
 }
 
 function addSampleToDataset(element){
@@ -190,7 +190,7 @@ function getWinner(playersMove, computersMove){
 function doTraining(){
     if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         train();
-        setTimeout(function() { alert('Training Completed'); }, 300);
+        setTimeout(function() { alert('Training Completed'); }, 3000);
 
 
     } else alert('Add Training Dataset');
