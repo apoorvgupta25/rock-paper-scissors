@@ -98,7 +98,7 @@ function takeSample(element, id, name, samples) {
             if(element.id == 1) paperSamples = samples;
             if(element.id == 2) scissorsSamples = samples;
         }
-    }, 750);
+    }, 500);
 }
 
 function addSampleToDataset(element){
@@ -133,13 +133,13 @@ async function doPredictions(){
     var text = "";
     switch (predictedClassID) {
         case 0:
-            text = "PL Rock";
+            text = "Rock";
             break;
         case 1:
-            text = "PL Paper";
+            text = "Paper";
             break;
         case 2:
-            text = "PL Scissors";
+            text = "Scissors";
             break;
     }
 
@@ -150,11 +150,12 @@ async function doPredictions(){
         // computers Move
         var computerText = "";
         var computersMove = Math.floor((Math.random() * 3));
-        if (computersMove == 0) computerText = "CP Rock";
-        if (computersMove == 1) computerText = "CP Paper";
-        if (computersMove == 2) computerText = "CP Scissors";
+        if (computersMove == 0) computerText = "Rock";
+        if (computersMove == 1) computerText = "Paper";
+        if (computersMove == 2) computerText = "Scissors";
 
         document.getElementById("computer").innerHTML=images1[computersMove];
+        document.getElementById("computerMoveName").innerHTML=computerText;
 
 
         // get winner
@@ -191,8 +192,6 @@ function doTraining(){
     if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         train();
         setTimeout(function() { alert('Training Completed'); }, 3000);
-
-
     } else alert('Add Training Dataset');
 }
 
@@ -216,6 +215,7 @@ function resetScore(){
     document.getElementById("score").innerText = "";
     document.getElementById("winner").innerText = "";
     document.getElementById("computer").style.display='none';
+    document.getElementById("computerMoveName").innerHTML="";
 }
 
 function resetAll(){
