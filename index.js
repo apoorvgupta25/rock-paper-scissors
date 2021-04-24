@@ -12,6 +12,8 @@ var rockSamples=0, paperSamples=0, scissorsSamples=0;
 var startPredictionsInterval;
 var time = 1000;
 var computerScore=0, playerScore=0;
+var requiredSamples = 5;
+var classes = ['0', '1', '2'];
 
 async function init(){
     await webcam.setup();
@@ -23,9 +25,10 @@ async function init(){
 
 // loading pre-trained model
 async function loadMobilenet() {
-  const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
-  const layer = mobilenet.getLayer('conv_pw_13_relu');                          // get output of 'conv_pw_13_relu' layer
-  return tf.model({inputs: mobilenet.inputs, outputs: layer.output});
+    const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
+    const layer = mobilenet.getLayer('conv_pw_13_relu');                          // get output of 'conv_pw_13_relu' layer
+    return tf.model({inputs: mobilenet.inputs, outputs: layer.output});
+
 }
 
 // new model - inputs are output of the pre-trained model
@@ -50,29 +53,54 @@ async function train(){
                 console.log('loss ' + logs.loss.toFixed(5) + ' accuracy ' + logs.acc);
             }
         }
-    })
+    });
 }
 
 // getting data
 function handleButton(element){
 	switch(element.id){
 		case "0":
-			rockSamples++;
-			document.getElementById("rocksamples").innerText = "Rock samples:" + rockSamples;
-			break;
+            takeSample(element, "rocksamples", "Rock samples", rockSamples);
+            break;
 		case "1":
-			paperSamples++;
-			document.getElementById("papersamples").innerText = "Paper samples:" + paperSamples;
+            takeSample(element, "papersamples", "Paper samples", paperSamples);
 			break;
 		case "2":
-			scissorsSamples++;
-			document.getElementById("scissorssamples").innerText = "Scissors samples:" + scissorsSamples;
+            takeSample(element, "scissorssamples", "Scissors samples", scissorsSamples);
 			break;
 	}
-    const image = webcam.capture();
-	label = parseInt(element.id);
-	rps_data.addImage(mobilenet.predict(image), label);         // passing image into mobilenet model and getting output weights #transfer learning
 }
+
+function takeSample(element, id, name, samples) {
+    for (var i in classes)
+        if (element.id != i) document.getElementById(i).disabled = true;
+
+    setTimeout(function() {
+        addSampleToDataset(element);
+        samples++;
+        document.getElementById(id).innerText = name + ":" + samples;
+
+        if (samples < requiredSamples){
+            takeSample(element, id, name, samples);
+        }
+        else {
+            for(i in classes)
+                if (element.id != i) document.getElementById(i).disabled = false;
+
+            // update global variable - todo (find a better way to update multiple global variables );
+            if(element.id == 0) rockSamples = samples;
+            if(element.id == 1) paperSamples = samples;
+            if(element.id == 2) scissorsSamples = samples;
+        }
+    }, 750);
+}
+
+function addSampleToDataset(element){
+    const image = webcam.capture();
+    label = parseInt(element.id);
+    rps_data.addImage(mobilenet.predict(image), label);
+}
+
 
 // making predictions
 async function predicts(makePrediction) {
@@ -83,7 +111,6 @@ async function predicts(makePrediction) {
     } else clearInterval(startPredictionsInterval);
 
 }
-
 
 var previousClass = -1;
 async function doPredictions(){
@@ -140,7 +167,6 @@ async function doPredictions(){
     await tf.nextFrame();
 }
 
-
 function getWinner(playersMove, computersMove){
     console.log(playersMove, computersMove);
 
@@ -155,20 +181,22 @@ function getWinner(playersMove, computersMove){
 }
 
 function doTraining(){
-    if (rockSamples > 0 | paperSamples > 0 | scissorsSamples > 0){
+    if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         train();
-        alert('Training Completed');
+        setTimeout(function() { alert('Training Completed'); }, 3000);
+
+
     } else alert('Add Training Dataset');
 }
 
 function startPredicting(){
-    if (rockSamples > 0 | paperSamples > 0 | scissorsSamples > 0){
+    if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         predicts(true);
     } else alert('Add Training Dataset');
 }
 
 function stopPredicting(){
-    if (rockSamples > 0 | paperSamples > 0 | scissorsSamples > 0){
+    if (rockSamples >= requiredSamples | paperSamples >= requiredSamples | scissorsSamples >= requiredSamples){
         predicts(false);
     } else alert('Add Training Dataset');
 }
