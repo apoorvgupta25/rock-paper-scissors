@@ -12,7 +12,7 @@ var rockSamples=0, paperSamples=0, scissorsSamples=0;
 var startPredictionsInterval;
 var time = 1000;
 var computerScore=0, playerScore=0;
-var requiredSamples = 5;
+var requiredSamples = 20;
 var classes = ['0', '1', '2'];
 var images1 = [];
 // index1 = 0;
